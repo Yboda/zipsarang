@@ -1,9 +1,12 @@
 <!doctype html>
 <html lang="en">
     <head>
-
         <!-- Webpage Title -->
-        <title>ZSRcat</title>
+        {% if status %}
+            <title>sign_up | 집냥</title>
+        {% else %}
+            <title>mypage | 집냥</title>
+        {% endif %}
 
         <!-- Required meta tags -->
         <meta charset="utf-8">

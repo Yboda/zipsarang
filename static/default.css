@@ -1,0 +1,289 @@
+html {
+	font-family: 'Apple SD Gothic Neo', Roboto, 'Noto Sans KR', NanumGothic, 'Malgun Gothic', sans-serif;
+	color: #555;
+	line-height: 1.2;
+	word-wrap: break-word;
+
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+body {
+	background: #eee;
+	-webkit-font-smoothing: antialiased;
+}
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+div, span, article, section, header, footer, aside, p, ul, li, fieldset, legend, label, a, nav, form {
+	box-sizing: border-box;
+	/* content-box */
+}
+ol, ul, li {
+	list-style: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+a {
+	display: inline-block;
+}
+button {
+	border: 0;
+	background: transparent;
+	cursor: pointer;
+}
+
+.flex-container {
+	/* padding: 10px; */
+	background: lightgray;
+}
+.flex-item {
+	padding: 10px;
+	border: 3px solid rgb(50,50,40);
+	color: white;
+	background: mediumseagreen;
+}
+.page {
+	background: pink;
+}
+.header {
+	background: white;
+}
+.header h1 a {
+	color: #333333;
+	text-decoration: none;
+}
+.header h1 a span {
+	color: red;
+}
+.header input {
+	background-color: lightcyan;
+}
+.btn-secondary {
+	margin-left: auto;
+}
+.btn-success {
+	margin-left: 1rem;
+}
+/* search */
+.search-form {
+	display: flex;
+	height: 40px;
+}
+.search-form input[type="search"] {
+	flex: 1;
+	min-width: 0;
+	margin-right: 10px;
+	border: 0;
+	border-radius: 0.3em;
+	font-size: 1rem;
+}
+.search-form input[type="submit"] {
+	width: 4em;
+	border: 0;
+	border-radius: 0.3em;
+	font-size: 1rem;
+	background: gold;
+}
+
+/* bullet list */
+.info-list {
+	margin-bottom: 2rem;
+}
+.info-list-item {
+	display: flex;
+	margin: 0.5em 0;
+}
+.info-list-item:before {
+	content: "⌘";
+	margin-right: 0.5em;
+}
+
+/* message */
+.user-list {
+	margin-bottom: 2rem;
+}
+.user-item {
+	display: flex;
+	margin-bottom: 1.5em;
+}
+.user-photo {
+	flex-shrink: 0;
+	width: 50px;
+	height: 50px;
+	margin-right: 0.5em;
+	border: 2px solid #333;
+	border-radius: 50%;
+	background-color: gold;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 150%;
+}
+
+/* friend list */
+.friend-item {
+	align-items: center;
+}
+.user-name {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.dialog {
+	width: 50vw;
+	padding: 2em;
+	border-radius: 1em;
+	background: white;
+}
+
+/* card list */
+.card-item {
+	display: flex;
+	flex-direction: column;
+
+	margin: 1rem 1rem 0rem 13rem;
+}
+.card-image {
+	height: 0;
+	padding-bottom: 60%;
+	background-color: lightgray;
+}
+
+.card-desc {
+	flex: 1 1 auto;
+	padding: 1em;
+	background: white;
+}
+
+@media (min-width: 600px) {
+	.card-list {
+		display: flex;
+		flex-wrap: wrap;
+		margin: 0 -1rem;
+	}
+	.card-item {
+		width: 50%;
+		padding: 0 1rem;
+	}
+}
+
+@media (min-width: 1200px) {
+	.card-item {
+		width: 30%;
+	}
+}
+.header {
+    display: flex;
+
+    align-items: center;
+
+    height: 80px;
+
+    padding: 0 1rem;
+}
+.search-form {
+    width: 300px;
+    max-width: 60%;
+
+    margin-left: 37rem;
+    margin-right: 3rem;
+}
+.primary {
+    padding: 1rem;
+}
+.floating-button {
+  display: flex;
+  position: fixed;
+  right: 70px;
+  bottom: 70px;
+  z-index: 900;
+}
+/*플로팅 버튼 아이콘 공용 스타일 수정X========*/
+.guest-btn::before {
+   width: 100%;
+   height: 100%;
+   opacity: 1;
+   border-radius: 50%;
+   font-size: 1.15em;
+   font-family: 'Font Awesome 5 Pro';
+	 /*플로팅 버튼 아이콘 색상 수정O*/
+	 color: blue;
+}
+
+/*플로팅 버튼 스타일========*/
+.move-guestBook{
+	float: bottom;
+	display: flex;
+	position: absolute;
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	cursor: pointer;
+	justify-content: center;
+	align-items: center;
+	margin-right: 5px;
+	/*사용자 설정 파트*/
+	font-weight: 900;
+	background-color: lightcyan;
+	border: 2px solid #b67700;
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+}
+/*플로팅 버튼 아이콘 FontAwesome 사용자 설정*/
+.guest-btn::before {
+	  content: '+';
+}
+.footer {
+	background-color: white;
+
+    padding: 1rem;
+
+    text-align: center;
+
+    border-top: 1px solid lightgray;
+}
+@media (min-width: 1024px) {
+    .page {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .header {
+        width: 100%;
+
+		position: fixed;
+    }
+    .primary{
+        order: 2;
+        width: 60%;
+    }
+    .footer{
+        order: 4;
+        width: 100%;
+    }
+}
+
+@media (min-width: 1400px) {
+    .primary{
+        flex: 1 1 auto;
+    }
+    .secondary{
+        width: 300px;
+    }
+
+}

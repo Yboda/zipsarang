@@ -35,7 +35,7 @@ def go_sing_up():
     if user_token is not None:
         request.cookie.pop('user_token', None)
         return render_template('login.html')
-    return render_template('user.html')
+    return render_template('user.html', status=True)
 
 @app.route('/sign_up', methods=['POST'])
 def sign_up():
@@ -104,7 +104,15 @@ def login():
 
 @app.route('/mypage')
 def mypage():
-    return render_template('index.html', status=False)
+    user_token = request.cookies.get('user_token')
+
+    if user_token is not None:
+        payload = jwt.decode(user_token, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"user_id": payload["id"]})
+        print(payload)
+        return render_template('user.html', user_info=user_info, status=False)
+    else:
+        return render_template('index.html', status=True)
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
