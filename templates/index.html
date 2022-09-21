@@ -33,106 +33,229 @@
 
     <!-- Material icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <script>
+        window.onload = function (){
+
+            let elements = document.getElementsByClassName("file-select");
+
+            let fileFunction = function() {
+                if($('#newfile').val() == ''){
+                    alert("파일 등록을 삭제하였습니다.")
+                } else {
+                    alert($('#newfile').val() + ' 파일이 등록되었습니다.')
+                }
+
+                let split = $('#newfile').val()
+                let splitLastValue = split.split('\\').reverse()[0]
+                $('#span-file').text(splitLastValue)
+            };
+
+            for (let i = 0; i < elements.length; i++) {
+                elements[i].addEventListener('change', fileFunction, false);
+            }
+        }
+    </script>
+
 </head>
 <body>
-<nav class="navbar is-fixed-top is-white" role="navigation" aria-label="main navigation"
-     style="display: flex; justify-content: space-between;">
-    <div class="navbar-brand">
-        <a class="navbar-item" href="/">
-            <img src="{{ url_for('static', filename='logo.jpg') }}">
-            <strong class="is-sparta" style="font-size: larger;">집사랑 냥냥하게</strong>
-        </a>
-    </div>
-    {% if status %}
-    <div class="navbar-brand">
-        <a class="navbar-item" href="/login">
-            <strong class="is-sparta" style="font-size: larger;">로그인</strong>
-        </a>
-        <a class="navbar-item" href="/sign_up">
-            <strong class="is-sparta" style="font-size: larger;">회원가입</strong>
-        </a>
-    </div>
-    {% else %}
-    <div class="navbar-brand">
-        <a href="#" class="navbar-item" onclick="sign_out();">
-            <strong class="is-sparta" style="font-size: larger;">로그아웃</strong>
-        </a>
-        <a class="navbar-item" href="/mypage">
-            <strong class="is-sparta" style="font-size: larger;">마이페이지</strong>
-        </a>
-    </div>
-    {% endif %}
-</nav>
+    <nav class="navbar is-fixed-top is-white" role="navigation" aria-label="main navigation"
+         style="display: flex; justify-content: space-between;">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="/">
+                <img class="is-rounded" src="{{ url_for('static', filename='logo.jpg') }}">
+                <strong class="is-sparta" style="font-size: larger;">집사랑 냥냥하게</strong>
+            </a>
+        </div>
+        {% if status %}
+        <div class="navbar-brand">
+            <a class="navbar-item" href="/login">
+                <strong class="is-sparta" style="font-size: larger;">로그인</strong>
+            </a>
+            <a class="navbar-item" href="/sign_up">
+                <strong class="is-sparta" style="font-size: larger;">회원가입</strong>
+            </a>
+        </div>
+        {% else %}
+        <div class="navbar-brand">
+            <a href="#" class="navbar-item" onclick="sign_out();">
+                <strong class="is-sparta" style="font-size: larger;">로그아웃</strong>
+            </a>
+            <a class="navbar-item" href="/mypage">
+                <strong class="is-sparta" style="font-size: larger;">마이페이지</strong>
+            </a>
+        </div>
+        {% endif %}
+    </nav>
 
-<!-- Post Box(민섭님) -->
-<section class="section">
-    <div id="post-box" class="container" onclick='$("#modal-post").addClass("is-active")'>
-        포스트박스 공간
-    </div>
+    <!-- Post Box(민섭님) -->
+    <!--<section class="section">
+        <div id="post-box" class="container" onclick='$("#modal-post").addClass("is-active")'>
+            포스트박스 공간
+        </div>
+    </section>-->
 
-    </div>
-</section>
+    <!-- Modal -->
+    <section class="section">
+        <article class="media">
+            {% if status is sameas false %}
+                    <figure class="media-left" style="align-self: center">
+                        <a href="#" onclick='$("#modal-post").addClass("is-active")'>
+                            <div class="image is-128x128">
+                                <a href="#" onclick='$("#modal-posting").addClass("is-active")'>
+                                    <img class="is-rounded" src="{{ url_for('static', filename=user_info.cat_img) }}" alt="포스팅 등록">
+                                </a>
+                            </div>
+                         </a>
+                    </figure>
+                    <div class="media-content">
+                        <div class="field">
+                            <div class="box">
+                                <p><strong>{{ user_info.nickname }}</strong> @{{ user_info.user_id }}</p>
+                                <p>고양이 : <strong> {{ user_info.cat_name }} </strong></p>
+                                <span style="display: flex; justify-content: space-between;">
+                                    소개글 : {{ user_info.intro }}
+                                    <a class="button is-sparta" onclick="modal_posting()">고양이 자랑!</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+            {% endif %}
+        </article>
 
-<!-- Modal -->
-
-<section class="section">
-    <article class="media">
-
-        <div class="modal" id="modal-post">
-            <div class="modal-background" onclick='$("#modal-post").removeClass("is-active")'></div>
+        {% if status is sameas false %}
+        <div class="modal" id="modal-posting">
+            <div class="modal-background" onclick='$("#modal-posting").removeClass("is-active")'></div>
             <div class="modal-content">
                 <div class="box">
                     <article class="media">
-
-                        <!--<figure class="media-left" style="align-self: center">
-                            <a class="image is-32x32" href="#">
-                                <img class="is-rounded"
-                                        src="{{ url_for("static", filename="profile_pics/profile_placeholder.png")
-                                }}">
-                                </a>
-                        </figure>
-                        사용자 이미지 추가 필요시 사용!!-->
-
                         <div class="media-content">
-                            <div class="picture">
-                                <img src="../static/file--20220920172441.jpg" alt="사진">
-                                <!--사진 불러오는 공간-->
-                            </div>
-                            <div class="nickname">닉네임</div>
-                            <div class="text">안녕~!</div>
-                            <div class="comments-box">
-                                <div class="savedComment">
-                                    <strong>ybr:</strong> 안녕!
+                            <form role="form" id="iform">
+                                <div class="file has-name">
+                                    <input type="hidden" id="posting-user_id" value="{{ user_info.user_id }}">
+                                    <input type="hidden" id="posting-nickname" value="{{ user_info.nickname }}">
+                                    <input type="hidden" id="posting-cat_name" value="{{ user_info.cat_name }}">
+                                    <label class="file-label" style="width:100%">
+                                        <input id="newfile" class="file-input file-select" type="file"
+                                               name="file">
+                                        <span class="file-cta">
+                                            <span class="file-icon"><i class="fa fa-upload"></i></span>
+                                            <span class="file-label">파일 선택</span>
+                                        </span>
+                                        <span id="span-file" class="file-name" style="width:100%;max-width:100%"></span>
+                                    </label>
                                 </div>
-                                <!--댓글 남는 공간-->
-                            </div>
-                            <div class="field">
-                                <p class="control">
-                                    <input id="clear" class="input input_comment is-rounded" placeholder="댓글 쓰기 ...">
-                                </p>
-                            </div>
-                            <nav class="level is-mobile">
-                                <div class="level-left">
+                                <div class="field">
+                                    <p class="control">
+                                        <textarea id="textarea-posting" class="textarea" placeholder="소개글"></textarea>
+                                    </p>
                                 </div>
-                                <div class="level-right">
-                                    <div class="level-item">
-                                        <button class="button comment_btn" onclick="post()">댓글 남기기</button>
+                                <nav class="level is-mobile">
+                                    <div class="level-left">
+
                                     </div>
-                                    <div class="level-item">
-                                        <a class="button is-sparta is-outlined"
-                                           onclick='$("#modal-post").removeClass("is-active")'>취소</a>
+                                    <div class="level-right">
+                                        <div class="level-item">
+                                            <a class="button is-sparta" onclick="new_posting()">포스팅하기</a>
+                                        </div>
+                                        <div class="level-item">
+                                            <a class="button is-sparta is-outlined"
+                                               onclick='$("#modal-posting").removeClass("is-active")'>취소</a>
+                                        </div>
                                     </div>
-                                </div>
-                            </nav>
+                                </nav>
+                            </form>
                         </div>
                     </article>
                 </div>
             </div>
-            </nav>
-            <button class="modal-close is-large" aria-label="close"
-                    onclick='$("#modal-post").removeClass("is-active")'></button>
+            <button class="modal-close is-large" aria-label="close" onclick='$("#modal-posting").removeClass("is-active")'></button>
         </div>
-    </article>
-</section>
+    </section>
+    {% endif %}
+
+    <section class="section">
+        <article class="media">
+            <div class="modal" id="modal-post">
+                <div class="modal-background" onclick='$("#modal-post").removeClass("is-active")'></div>
+                <div class="modal-content">
+                    <div class="box">
+                        <article class="media">
+                            <div class="media-content">
+                                <div class="picture">
+                                    <img class="modal-img" src="../static/file--20220920172441.jpg" alt="사진">
+                                    <!--사진 불러오는 공간-->
+                                </div>
+                                <div class="nickname">닉네임</div>
+                                <div class="text">안녕~!</div>
+                                <div class="comments-box">
+                                    <div class="savedComment">
+                                        <strong>ybr:</strong> 안녕!
+                                    </div>
+                                    <!--댓글 남는 공간-->
+                                </div>
+                                <div class="field">
+                                    <p class="control">
+                                        <input id="clear" class="input input_comment is-rounded" placeholder="댓글 쓰기 ...">
+                                    </p>
+                                </div>
+                                <nav class="level is-mobile">
+                                    <div class="level-left">
+                                    </div>
+                                    <div class="level-right">
+                                        <div class="level-item">
+                                            <button class="button comment_btn" onclick="post()">댓글 남기기</button>
+                                        </div>
+                                        <div class="level-item">
+                                            <a class="button is-sparta is-outlined"
+                                               onclick='$("#modal-post").removeClass("is-active")'>취소</a>
+                                        </div>
+                                    </div>
+                                </nav>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <button class="modal-close is-large" aria-label="close" onclick='$("#modal-post").removeClass("is-active")'></button>
+            </div>
+        </article>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            {% for posting in postinglist %}
+                <div class="box" onclick="$("#modal-post").removeClass("is-active")'">
+                    <article class="media">
+                        <div class="media-left">
+                            <a class="image is-64x64" href="#">
+                                <img class="is-rounded"
+                                     src="../static/{{ posting.cat_img }}" alt="{{ posting.cat_name }}">
+                            </a>
+                        </div>
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                    <strong>{{ posting.nickname }}</strong> <small>@{{ posting.user_id }}</small>
+                                    <br>
+                                    {{ posting.desc }}
+                                </p>
+                            </div>
+                            <nav class="level is-mobile">
+<!--
+                                <div class="level-left">
+                                    <a class="level-item is-sparta" aria-label="heart" onclick="toggle_like('', 'heart')">
+                                        <span class="icon is-small"><i class="fa fa-heart" aria-hidden="true"></i></span>&nbsp;<span class="like-num">2.7k</span>
+                                    </a>
+                                </div>
+-->
+
+                            </nav>
+                        </div>
+                    </article>
+                </div>
+            {% endfor %}
+
+        </div>
+    </section>
 </body>
 </html>
