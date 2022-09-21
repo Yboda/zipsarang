@@ -2,6 +2,8 @@
 from flask import Flask, render_template, jsonify, request, redirect, url_for
 from pymongo import MongoClient
 
+import os
+
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 import jwt
@@ -32,10 +34,13 @@ def home():
 @app.route('/sign_up', methods=['GET'])
 def go_sing_up():
     user_token = request.cookies.get('user_token')
-    if user_token is not None:
-        request.cookie.pop('user_token', None)
-        return render_template('login.html')
-    return render_template('user.html', status=True)
+    try:
+        payload = jwt.decode(user_token, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"user_id": payload["id"]})
+        return redirect(url_for("home"))
+#        return render_template('index.html', user_info=user_info, status=False)
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return render_template('user.html', status=True)
 
 @app.route('/sign_up', methods=['POST'])
 def sign_up():
@@ -49,14 +54,16 @@ def sign_up():
 
     filename = f'file--{mytime}'
 
-    save_to = f'static/{filename}.{extension}'
+    dir = os.path.dirname(os.path.realpath(__file__)).replace('\\', '/') + '/'
+
+    save_to = f'{dir}static/{filename}.{extension}'
     file.save(save_to)
 
     user_id = request.form['user_id']
     password = request.form['password']
     nickname = request.form['nickname']
-    cat_name = request.form['cat_name']
-    intro = request.form['intro']
+    cat_name = request.form.get('cat_name')
+    intro = request.form.get('intro')
 
     pw_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
 
@@ -79,6 +86,7 @@ def check_dup():
 
 @app.route('/login', methods=['GET'])
 def go_login():
+    user_token = request.cookies.get('user_token')
     return render_template('login.html')
 
 @app.route('/login', methods=['POST'])
@@ -93,7 +101,7 @@ def login():
     if result is not None:
         payload = {
          'id': user_id,
-         'exp': datetime.utcnow() + timedelta(seconds=300)  # 로그인 5분 유지
+         'exp': datetime.utcnow() + timedelta(seconds=3600)  # 로그인 1시간 유지
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
@@ -109,10 +117,56 @@ def mypage():
     if user_token is not None:
         payload = jwt.decode(user_token, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"user_id": payload["id"]})
-        print(payload)
+
         return render_template('user.html', user_info=user_info, status=False)
     else:
-        return render_template('index.html', status=True)
+        return redirect(url_for("home"))
+        #return render_template('index.html', status=True)
+
+@app.route('/update_user', methods=['POST'])
+def update_user():
+
+    original = db.users.find_one({'user_id': request.form['user_id']})
+
+    password = request.form.get('password')
+    nickname = request.form.get('nickname')
+    cat_name = request.form.get('cat_name')
+    intro = request.form.get('intro')
+
+    if password is not None:
+        pw_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
+        db.users.update_one({'user_id': request.form['user_id']}, {'$set': {'password': pw_hash}})
+
+    if original['cat_img'] != request.form['fileName']:
+        file = request.files["file"]
+
+        extension = file.filename.split('.')[-1]
+
+        today = datetime.now()
+        mytime = today.strftime('%Y%m%d%H%M%S')
+
+        filename = f'file--{mytime}'
+
+        dir = os.path.dirname(os.path.realpath(__file__)).replace('\\', '/') + '/'
+
+        save_to = f'{dir}./static/{filename}.{extension}'
+        file.save(save_to)
+
+        db.users.update_one({'user_id': request.form['user_id']}, {'$set': {'cat_img': f'{filename}.{extension}'}})
+
+    db.users.update_one({'user_id': request.form['user_id']}, {'$set': {'nickname': nickname, 'cat_name': cat_name, 'intro': intro}})
+
+    return jsonify({'result': 'success'})
+
+@app.route('/comment', methods=['POST'])
+def comment():
+    # 댓글 저장
+    return jsonify({"result": "success", 'msg': '저장성공'})
+
+@app.route("/get_commnet", methods=['GET'])
+def get_posts():
+    # 댓글 목록 받아오기
+    return jsonify({"result": "success", "msg": "댓글왔다"})
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

@@ -29,6 +29,25 @@
 
         <script src="{{ url_for('static', filename='common.js') }}"></script>
 
+        <script>
+            window.onload = function (){
+
+                let elements = document.getElementsByClassName("file-select");
+
+                let fileFunction = function() {
+                    alert($('#file').val() + ' 파일이 등록되었습니다.')
+
+                    let split = $('#file').val()
+                    let splitLastValue = split.split('\\').reverse()[0]
+                    $('#fileName').val(splitLastValue)
+                    $('#span-file').text(splitLastValue)
+                };
+
+                for (let i = 0; i < elements.length; i++) {
+                    elements[i].addEventListener('change', fileFunction, false);
+                }
+            }
+        </script>
         <style>
             body {
                 background-color: RGBA(232, 52, 78, 0.2);
@@ -61,7 +80,11 @@
         <section class="hero is-white">
             <div class="hero-body has-text-centered" style="padding-bottom:1rem;margin:auto;">
                 <a href="#" onclick="go_main()"><h1 class="title is-sparta">집사랑 냥냥하게</h1></a>
-                <h3 class="subtitle is-sparta">회원가입</h3>
+                {% if status %}
+                    <h3 class="subtitle is-sparta">회원가입</h3>
+                {% else %}
+                    <h3 class="subtitle is-sparta">마이페이지</h3>
+                {% endif %}
             </div>
         </section>
         <section class="section">
@@ -72,12 +95,15 @@
                             <div class="content">
                                 <div class="field has-addons">
                                     <div class="control has-icons-left" style="width:100%">
-                                        <input id="input-user_id" class="input" type="text" placeholder="아이디">
+                                        <input id="input-user_id" class="input" type="text" placeholder="아이디" {% if status is sameas false %} readonly value="{{ user_info.user_id }}"{% endif %}>
+                                        <input id="hidden-user_id" class="input" type="hidden" placeholder="아이디" {% if status is sameas false %} value="{{ user_info.user_id }}"{% endif %}>
                                         <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
                                     </div>
+                                    {% if status %}
                                     <div id="btn-check-dup" class="control">
                                         <button class="button is-sparta" onclick="check_dup()">중복확인</button>
                                     </div>
+                                    {% endif %}
                                 </div>
                                 <p id="help-id" class="help is-loading">아이디는 2-10자의 영문과 숫자와 일부 특수문자(._-)만 입력 가능합니다.</p>
                                 <p id="help-id-login" class="help is-danger"></p>
@@ -100,37 +126,59 @@
                                 <div class="field">
                                     <div class="control has-icons-left" style="width:100%">
                                         <input id="input-nickname" class="input" type="text"
-                                               placeholder="닉네임">
+                                               placeholder="닉네임" {% if status is sameas false %} value="{{ user_info.nickname }}" {% endif %}>
                                         <span class="icon is-small is-left"><i class="fa fa-user-plus"></i></span>
                                     </div>
                                 </div>
                                 <div class="field">
                                     <div class="control has-icons-left" style="width:100%">
                                         <input id="input-cat_name" class="input" type="text"
-                                               placeholder="고양님 성함">
+                                               placeholder="고양님 성함" {% if status is sameas false %} value="{{ user_info.cat_name }}" {% endif %}>
                                         <span class="icon is-small is-left"><i class="fa fa-paw"></i></span>
+                                        <p class="help is-sparta">고양님 성함은 비밀번호 초기화 시, 사용됩니다.</p>
                                     </div>
                                 </div>
                                 <div class="field">
                                     <div class="control has-icons-left" style="width:100%">
                                         <input id="input-intro" class="input" type="text"
-                                               placeholder="간단한 소개">
+                                               placeholder="간단한 소개" {% if status is sameas false %} value="{{ user_info.intro }}" {% endif %}>
                                         <span class="icon is-small is-left"><i class="fa fa-comment"></i></span>
                                     </div>
                                 </div>
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="file">
-                                    <label class="custom-file-label" for="file">고양님 사진</label>
+                                <div class="file has-name">
+                                    <label class="file-label" style="width:100%">
+                                        <input id="file" class="file-input file-select" type="file"
+                                               name="file">
+                                        <span class="file-cta">
+                                            <span class="file-icon"><i class="fa fa-upload"></i></span>
+                                            <span class="file-label">파일 선택</span>
+                                        </span>
+                                        <span id="span-file" class="file-name" style="width:100%;max-width:100%">{% if status is sameas false %} {{ user_info.cat_img }} {% endif %}</span>
+                                        <input type="hidden" id="fileName" {% if status is sameas false %} value="{{ user_info.cat_img }}" {% endif %}>
+                                    </label>
                                 </div>
+                                <!--<div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="file" {% if status is sameas flase %} value="{{ user_info.cat_img }}" {% endif %}>
+                                    <label class="custom-file-label" for="file">고양님 사진</label>
+                                </div>-->
                             </div>
                             <nav class="level is-mobile">
+                                {% if status %}
                                 <button class="level-item button is-sparta" onclick="sign_up()">
                                     회원가입
                                 </button>
+                                {% else %}
+                                <button class="level-item button is-sparta" onclick="update_user()">
+                                    변경
+                                </button>
+                                {% endif %}
                                 <button class="level-item button is-sparta is-outlined" onclick="go_main()">
-                                    취소
+                                    메인으로
                                 </button>
                             </nav>
+                            {% if status is sameas false %}
+                            <p><span class="is-sparta">주의! </span>비밀번호는 입력 시에만 변경됩니다.</p>
+                            {% endif %}
                         </div>
                     </article>
                 </div>
