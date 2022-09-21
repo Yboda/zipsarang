@@ -18,9 +18,10 @@ app.config['UPLOAD_FOLDER'] = "./static/default_img"
 
 SECRET_KEY = 'zipsarang'
 
-client = MongoClient('mongodb+srv://test:test@cluster0.um5wee2.mongodb.net/?retryWrites=true&w=majority')
-# client = MongoClient('mongodb://test:test@localhost', 27017, username="test", password="test")
-# client = MongoClient('54.180.148.42', 27017, username="test", password="test")
+# local
+# client = MongoClient('mongodb+srv://test:test@cluster0.um5wee2.mongodb.net/?retryWrites=true&w=majority')
+# aws
+client = MongoClient('54.180.148.42', 27017, username="test", password="test")
 db = client.zipsarang
 
 @app.route('/')
