@@ -1,60 +1,102 @@
 <!doctype html>
 <html lang="en">
-    <head>
+<head>
 
-        <!-- Webpage Title -->
-        <title>Love | Cat</title>
+    <!-- Webpage Title -->
+    <title>Home | SWEETER</title>
 
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-        <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-        <meta property="og:title" content="집사랑 냥냥하게"/>
-        <meta property="og:description" content="mini project for Web Plus"/>
-        <meta property="og:image" content="{{ url_for('static', filename='ogimg.png') }}"/>
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <!-- Font Awesome CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- CSS Call-->
+    <link href="{{ url_for('static', filename='mystyle.css') }}" rel="stylesheet">
 
-        <!-- Bulma CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
-        <!-- Font Awesome CSS -->
-        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
-        <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    <script defer src="../static/main.js"></script>
 
-        <!-- JS -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <!-- Material icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-        <script src="{{ url_for('static', filename='common.js') }}"></script>
 </head>
+
 <body>
-    <nav class="navbar is-fixed-top is-white" role="navigation" aria-label="main navigation" style="display: flex; justify-content: space-between;">
-        <div class="navbar-brand">
-            <a class="navbar-item" href="/">
-                <img src="{{ url_for('static', filename='logo.jpg') }}">
-                <strong class="is-sparta" style="font-size: larger;">집사랑 냥냥하게</strong>
-            </a>
+
+<!-- Post Box(민섭님) -->
+<section class="section">
+    <div id="post-box" class="container" onclick='$("#modal-post").addClass("is-active")'>
+        포스트박스 공간
+    </div>
+
+    </div>
+</section>
+
+<!-- Modal -->
+
+<section class="section">
+    <article class="media">
+
+        <div class="modal" id="modal-post">
+            <div class="modal-background" onclick='$("#modal-post").removeClass("is-active")'></div>
+            <div class="modal-content">
+                <div class="box">
+                    <article class="media">
+
+                        {#                        <figure class="media-left" style="align-self: center">#}
+                        {#                            <a class="image is-32x32" href="#">#}
+                        {#                                <img class="is-rounded"#}
+                        {#                                     src="{{ url_for("static", filename="profile_pics/profile_placeholder.png") }}">#}
+                        {#                            </a>#}
+                        {#                        </figure>#}
+                        {#                    사용자 이미지 추가 필요시 사용!! #}
+
+                        <div class="media-content">
+                            <div class="picture">
+                                <img src="../static/1652337370806_0.jpg" alt="사진">
+                                {#                                사진 불러오는 공간#}
+                            </div>
+                            <div class="nickname">닉네임</div>
+                            <div class="text">안녕~!</div>
+                            <div class="comments-box">
+                                <div class="savedComment">
+                                    <strong>ybr:</strong> 안녕!
+                                </div>
+                                {#                                댓글 남는 공간#}
+                            </div>
+                            <div class="field">
+                                <p class="control">
+                                    <input id="clear" class="input input_comment is-rounded" placeholder="댓글 쓰기 ...">
+                                </p>
+                            </div>
+                            <nav class="level is-mobile">
+                                <div class="level-left">
+                                </div>
+                                <div class="level-right">
+                                    <div class="level-item">
+                                        <button class="button comment_btn" onclick="post()">댓글 남기기</button>
+                                    </div>
+                                    <div class="level-item">
+                                        <a class="button is-sparta is-outlined"
+                                           onclick='$("#modal-post").removeClass("is-active")'>취소</a>
+                                    </div>
+                                </div>
+                            </nav>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <button class="modal-close is-large" aria-label="close"
+                    onclick='$("#modal-post").removeClass("is-active")'></button>
         </div>
-        {% if status %}
-            <div class="navbar-brand">
-                <a class="navbar-item" href="/login">
-                    <strong class="is-sparta"  style="font-size: larger;">로그인</strong>
-                </a>
-                <a class="navbar-item" href="/sign_up">
-                    <strong class="is-sparta"  style="font-size: larger;">회원가입</strong>
-                </a>
-            </div>
-        {% else %}
-            <div class="navbar-brand">
-                <a href="#" class="navbar-item" onclick="sign_out();">
-                    <strong class="is-sparta"  style="font-size: larger;">로그아웃</strong>
-                </a>
-                <a class="navbar-item" href="/mypage">
-                    <strong class="is-sparta"  style="font-size: larger;">마이페이지</strong>
-                </a>
-            </div>
-        {% endif %}
-    </nav>
+    </article>
+</section>
+
 </body>
 </html>

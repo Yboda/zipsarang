@@ -1,0 +1,76 @@
+body {
+    background-color: RGBA(232, 52, 78, 0.2);
+    min-height: 100vh;
+		padding-top: 3.25rem;
+}
+
+.section {
+    padding: 1rem 1.5rem;
+    max-width: 750px;
+    margin: auto;
+}
+img {
+    object-fit:cover;
+    width:100%;
+    height:100%;
+}
+.nickname {
+    margin: 2px 0;
+    width: 80%;
+    height: 20px;
+    font-size: 12px;
+    font-weight: 900;
+}
+.text {
+    font-size: 14px;
+    margin-bottom: 3px;
+}
+.savedComment {
+    font-size: 14px;
+    margin-top: 3px;
+}
+.is-sparta {
+    color: #e8344e !important;
+}
+
+.button.is-sparta {
+    background-color: #e8344e;
+    border-color: transparent;
+    color: #fff !important;
+}
+
+.button.is-sparta.is-outlined {
+    background-color: transparent;
+    border-color: #e8344e;
+    color: #e8344e !important;
+}
+
+.modal-content {
+    width: 600px;
+    max-width: 80%;
+}
+
+input::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
+#post-box {
+    background-color: #fff;
+    width:200px;
+    height: 300px;
+}
+
+.comments-box {
+    border-top: 1px solid rgba(219,219,219,.5);
+    border-bottom: 1px solid rgba(219,219,219,.5);
+    background-color: #fff;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto 5px;
+    overflow: auto;
+    -ms-overflow-style: none;
+    padding-bottom: 10px;
+}
+.comments-box::-webkit-scrollbar{
+  display:none;
+}
