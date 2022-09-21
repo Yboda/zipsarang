@@ -1,6 +1,6 @@
 collections :
     1. users { 'user_id', 'password', 'nickname', 'cat_name', 'intro', 'cat_img' }
     2. posting { 'cat_img', 'desc', 'user_id', 'nickname', 'cat_name' }
-    3. comment { 'comment', 'user_id', 'posting_id' }
-    4. likes { 'user_id', 'posting_id' }
-    5. bookmark { 'user_id', 'mid' }
+    3. comment { 'comment', 'user_id', 'nickname', 'posting_id' }
+    4. likes { 'user_id', 'posting_id' } - 추후
+    5. bookmark { 'user_id', 'mid' } - 추후

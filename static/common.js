@@ -271,6 +271,70 @@ function modal_posting(){
     $("#modal-posting").addClass("is-active")
 }
 
+function new_comment(nick){
+    user_id = $("#temp-user_id").val()
+    posting_id = $('#_id').val()
+    comment = $("#modal-comment").val()
+
+    if (comment == "") {
+        alert("코멘트를 입력해주세요.")
+        $("#modal-comment").focus()
+        return
+    }
+    $.ajax({
+        type: "POST",
+        url: "/new_comment",
+        data: {
+            user_id : user_id,
+            posting_id : posting_id,
+            comment : comment,
+            nickname : nick
+        },
+        success: function (response) {
+            alert("코멘트가 등록되었습니다.")
+            $("#modal-comment").val('')
+            modal_comment($('#_id').val())
+        }
+    });
+
+}
+
+function modal_comment(_id){
+    $('#_id').val(_id)
+    user_id = $("#temp-user_id").val()
+
+    $.ajax({
+        type: "POST",
+        url: "/posting_info",
+        data: {'_id' : _id},
+        success: function (response) {
+            document.getElementById('modal-posting-cat_img').src = "../static/" + response['posting_info'].cat_img
+            $('#modal-posting-cat_name').text(response['posting_info'].cat_name)
+
+            $('#comments').empty()
+
+            temp_html = ''
+
+            /*<button class="modal-close" aria-label="close" onclick=''></button> 시간되면 삭제기능 추가...*/
+            for(let i = 0; i < response['comments'].length; i++){
+                if(user_id == response['comments'][i]['user_id']){
+                    temp_html += `<div class="savedComment">
+                            <strong>` + response['comments'][i]['nickname'] + `</strong> | ` +  response['comments'][i]['comment'] +
+                        `</div>`
+                } else {
+                    temp_html += `<div class="savedComment">
+                            <strong>` + response['comments'][i]['nickname'] + `</strong> | ` +  response['comments'][i]['comment'] +
+                        `</div>`
+                }
+            }
+
+            $('#comments').append(temp_html)
+
+            $("#modal-post").addClass("is-active")
+        }
+    });
+}
+
 function go_main(){
     window.location.href = '/'
 }
