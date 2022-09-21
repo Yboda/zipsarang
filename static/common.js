@@ -157,6 +157,26 @@ function update_user() {
 }
 
 function default_password(){
+    $("#modal-default-pw").addClass("is-active")
+}
+
+function default_password_api(){
+
+    user_id = $("#modal-user_id").val()
+    cat_name = $("#modal-cat_name").val()
+
+    $.ajax({
+        type: "POST",
+        url: "/default_password",
+        data: {
+            user_id: user_id,
+            cat_name: cat_name
+        },
+        success: function (response) {
+            alert(response["msg"])
+            window.location.reload()
+        }
+    });
 
 }
 

@@ -158,6 +158,20 @@ def update_user():
 
     return jsonify({'result': 'success'})
 
+@app.route('/default_password', methods=['POST'])
+def default_password():
+
+    user_id = request.form.get('user_id')
+    cat_name = request.form.get('cat_name')
+
+    find_user = db.users.find_one({"user_id": user_id, "cat_name" : cat_name})
+    if find_user is None:
+        return jsonify({'msg' : "입력하신 내용과 일치하는 정보가 없습니다."})
+    # 비밀번호 mycat123 초기화
+    db.users.update_one({'user_id': user_id}, {'$set': {'password': '0e024e5ab7654161d9ee542721aa626a25cbfdb1380e25006afce1e57633ded7'}})
+
+    return jsonify({'msg' : user_id + "의 비밀번호가 'mycat123'으로 변경되었습니다."})
+
 @app.route('/comment', methods=['POST'])
 def comment():
     # 댓글 저장
