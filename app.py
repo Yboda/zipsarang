@@ -22,13 +22,16 @@ db = client.zipsarang
 
 @app.route('/')
 def home():
+
+    postinglist = list(db.posting.find({}))
+
     user_token = request.cookies.get('user_token')
     try:
         payload = jwt.decode(user_token, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"user_id": payload["id"]})
-        return render_template('index.html', user_info=user_info, status=False)
+        return render_template('index.html', postinglist=postinglist, user_info=user_info, status=False)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return render_template('index.html', status=True)
+        return render_template('index.html', postinglist=postinglist, status=True)
 
 
 @app.route('/sign_up', methods=['GET'])
@@ -156,6 +159,52 @@ def update_user():
 
     db.users.update_one({'user_id': request.form['user_id']}, {'$set': {'nickname': nickname, 'cat_name': cat_name, 'intro': intro}})
 
+    return jsonify({'result': 'success'})
+
+@app.route('/default_password', methods=['POST'])
+def default_password():
+
+    user_id = request.form.get('user_id')
+    cat_name = request.form.get('cat_name')
+
+    find_user = db.users.find_one({"user_id": user_id, "cat_name" : cat_name})
+    if find_user is None:
+        return jsonify({'msg' : "입력하신 내용과 일치하는 정보가 없습니다."})
+    # 비밀번호 mycat123 초기화
+    db.users.update_one({'user_id': user_id}, {'$set': {'password': '0e024e5ab7654161d9ee542721aa626a25cbfdb1380e25006afce1e57633ded7'}})
+
+    return jsonify({'msg' : user_id + "의 비밀번호가 'mycat123'으로 변경되었습니다."})
+
+@app.route('/new_posting', methods=['POST'])
+def new_posting():
+
+    file = request.files["file"]
+
+    extension = file.filename.split('.')[-1]
+
+    today = datetime.now()
+    mytime = today.strftime('%Y%m%d%H%M%S')
+
+    filename = f'file--{mytime}'
+
+    dir = os.path.dirname(os.path.realpath(__file__)).replace('\\', '/') + '/'
+
+    save_to = f'{dir}static/{filename}.{extension}'
+    file.save(save_to)
+
+    user_id = request.form['user_id']
+    desc = request.form['desc']
+    nickname = request.form['nickname']
+    cat_name = request.form.get('cat_name')
+
+    doc = {
+        "cat_img": f'{filename}.{extension}',    # 고양이 사진
+        "desc": desc,           # 자랑글
+        "user_id": user_id,    # 작성자
+        "nickname": nickname,   # 닉네임
+        "cat_name": cat_name   # 고양이 이름
+    }
+    db.posting.insert_one(doc)
     return jsonify({'result': 'success'})
 
 @app.route('/comment', methods=['POST'])

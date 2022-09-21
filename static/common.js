@@ -157,6 +157,26 @@ function update_user() {
 }
 
 function default_password(){
+    $("#modal-default-pw").addClass("is-active")
+}
+
+function default_password_api(){
+
+    user_id = $("#modal-user_id").val()
+    cat_name = $("#modal-cat_name").val()
+
+    $.ajax({
+        type: "POST",
+        url: "/default_password",
+        data: {
+            user_id: user_id,
+            cat_name: cat_name
+        },
+        success: function (response) {
+            alert(response["msg"])
+            window.location.reload()
+        }
+    });
 
 }
 
@@ -203,6 +223,52 @@ function check_dup() {
 
         }
     });
+}
+
+function new_posting(){
+    user_id = $("#posting-user_id").val()
+    nickname = $("#posting-nickname").val()
+    cat_name = $("#posting-cat_name").val()
+    desc = $("#textarea-posting").val()
+    cat_img = $('#newfile')[0].files[0]
+
+    if (cat_img == "") {
+        alert("고양이 사진을 업로드해주세요.")
+        $("#newfile").focus()
+        return
+    }
+    
+    if (desc == "") {
+        alert("고양이 자랑을 입력해주세요.")
+        $("#textarea-posting").focus()
+        return
+    }
+
+    let form_data = new FormData()
+
+    form_data.append("file", cat_img)
+    form_data.append("user_id", user_id)
+    form_data.append("nickname", nickname)
+    form_data.append("cat_name", cat_name)
+    form_data.append("desc", desc)
+
+    $.ajax({
+        type: "POST",
+        url: "/new_posting",
+        data: form_data,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+            alert("포스팅이 등록되었습니다.")
+            window.location.replace("/")
+        }
+    });
+
+}
+
+function modal_posting(){
+    $("#modal-posting").addClass("is-active")
 }
 
 function go_main(){

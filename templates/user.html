@@ -35,7 +35,11 @@
                 let elements = document.getElementsByClassName("file-select");
 
                 let fileFunction = function() {
-                    alert($('#file').val() + ' 파일이 등록되었습니다.')
+                    if($('#file').val() == ''){
+                        alert("파일 등록을 삭제하였습니다.")
+                    } else {
+                        alert($('#file').val() + ' 파일이 등록되었습니다.')
+                    }
 
                     let split = $('#file').val()
                     let splitLastValue = split.split('\\').reverse()[0]

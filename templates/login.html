@@ -55,6 +55,11 @@
     </style>
     <script>
 
+         window.onload = function (){
+
+                alert({{ "success_msg" }})
+            }
+
         function sign_in() {
             let user_id = $("#input-user_id").val()
             let password = $("#input-password").val()
@@ -112,9 +117,6 @@
                                     <input id="input-user_id" class="input" type="text" placeholder="아이디">
                                     <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
                                 </div>
-                                <div id="btn-check-dup" class="control is-hidden">
-                                    <button class="button is-sparta" onclick="check_dup()">중복확인</button>
-                                </div>
                             </div>
                             <p id="help-id" class="help is-hidden">아이디는 2-10자의 영문과 숫자와 일부 특수문자(._-)만 입력 가능합니다.</p>
                             <p id="help-id-login" class="help is-danger"></p>
@@ -154,6 +156,38 @@
                 </article>
             </div>
         </div>
+    </section>
+
+    <section class="section">
+        <article class="media">
+            <div class="modal" id="modal-default-pw">
+                <div class="modal-background" onclick='$("#modal-default-pw").removeClass("is-active")'></div>
+                <div class="modal-content">
+                    <div class="box">
+                        <article class="media">
+                            <div class="media-content">
+                                <div class="control has-icons-left" style="width:100%">
+                                    <input id="modal-user_id" class="input" type="text" placeholder="아이디">
+                                    <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
+                                </div>
+                                <div class="control has-icons-left" style="width:100%">
+                                    <input id="modal-cat_name" class="input" type="text" placeholder="고양이 이름">
+                                    <span class="icon is-small is-left"><i class="fa fa-paw"></i></span>
+                                </div>
+                                <nav class="level is-mobile">
+                                    <a href="#" class="level-item button is-sparta is-outlined" onclick="default_password_api()">
+                                        비밀번호 초기화
+                                    </a>
+                            </nav>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                </nav>
+                <button class="modal-close is-large" aria-label="close"
+                        onclick='$("#modal-default-pw").removeClass("is-active")'></button>
+            </div>
+        </article>
     </section>
 </body>
 </html>
