@@ -158,5 +158,15 @@ def update_user():
 
     return jsonify({'result': 'success'})
 
+@app.route('/comment', methods=['POST'])
+def comment():
+    # 댓글 저장
+    return jsonify({"result": "success", 'msg': '저장성공'})
+
+@app.route("/get_commnet", methods=['GET'])
+def get_posts():
+    # 댓글 목록 받아오기
+    return jsonify({"result": "success", "msg": "댓글왔다"})
+
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
