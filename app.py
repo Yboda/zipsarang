@@ -1,6 +1,7 @@
 # flask, pymongo, dnspython, PyJWT 설치
 from flask import Flask, render_template, jsonify, request, redirect, url_for
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 
 import os
 
@@ -17,13 +18,18 @@ app.config['UPLOAD_FOLDER'] = "./static/default_img"
 
 SECRET_KEY = 'zipsarang'
 
-client = MongoClient('mongodb+srv://root:1234@cluster0.um5wee2.mongodb.net/?retryWrites=true&w=majority')
+client = MongoClient('mongodb+srv://test:test@cluster0.um5wee2.mongodb.net/?retryWrites=true&w=majority')
+# client = MongoClient('mongodb://test:test@localhost', 27017, username="test", password="test")
+# client = MongoClient('54.180.148.42', 27017, username="test", password="test")
 db = client.zipsarang
 
 @app.route('/')
 def home():
 
     postinglist = list(db.posting.find({}))
+
+    for posting in postinglist:
+        posting['_id'] = str(posting['_id'])
 
     user_token = request.cookies.get('user_token')
     try:
@@ -207,10 +213,38 @@ def new_posting():
     db.posting.insert_one(doc)
     return jsonify({'result': 'success'})
 
-@app.route('/comment', methods=['POST'])
+@app.route('/posting_info', methods=['POST'])
+def posting_info():
+    #포스팅 조회
+    _id = request.form['_id']
+    posting = db.posting.find_one({'_id' : ObjectId(_id)},{'_id':False})
+
+    comments = list(db.comment.find({'posting_id' : _id}))
+
+    for comment in comments:
+        comment['_id'] = str(comment['_id'])
+
+    return jsonify({"posting_info": posting, "comments" : comments})
+
+@app.route('/new_comment', methods=['POST'])
 def comment():
+
+    user_id = request.form['user_id']
+    posting_id = request.form['posting_id']
+    comment = request.form['comment']
+    nickname = request.form['nickname']
+
+    doc = {
+        "comment" : comment,
+        "nickname" : nickname,
+        "user_id" : user_id,
+        "posting_id" : posting_id
+    }
+
+    db.comment.insert_one(doc)
+
     # 댓글 저장
-    return jsonify({"result": "success", 'msg': '저장성공'})
+    return jsonify({"result": "success"})
 
 @app.route("/get_commnet", methods=['GET'])
 def get_posts():

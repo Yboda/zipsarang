@@ -1,3 +1,4 @@
+/*
 const thisIsButton = document.getElementsByClassName('comment_btn')[0];
 //버튼요소 변수 할당
 
@@ -15,4 +16,4 @@ thisIsButton.addEventListener('click', function () {
 
     var input_clear = document.getElementById('clear');
     input_clear.value = null;
-});
+});*/
