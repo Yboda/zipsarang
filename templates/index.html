@@ -249,10 +249,10 @@
 <section class="section">
     <div class="container">
         {% for posting in postinglist %}
-            <div class="box" onclick="$(" #modal-post").removeClass("is-active")'">
+            <div class="box">
             <article class="media">
                 <div class="media-left">
-                    <a class="image is-64x64" href="#">
+                    <a class="image is-64x64" href="#" onclick="modal_comment('{{ posting._id }}');">
                         <img class="is-rounded"
                              src="../static/{{ posting.cat_img }}" alt="{{ posting.cat_name }}">
                     </a>
@@ -283,4 +283,4 @@
     </div>
 </section>
 </body>
-</html>
+</htm
