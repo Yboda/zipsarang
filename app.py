@@ -1,6 +1,5 @@
 # flask, pymongo, dnspython, PyJWT 설치
 from flask import Flask, render_template, jsonify, request, redirect, url_for
-from pymongo import MongoClient
 
 import os
 
@@ -17,7 +16,10 @@ app.config['UPLOAD_FOLDER'] = "./static/default_img"
 
 SECRET_KEY = 'zipsarang'
 
-client = MongoClient('mongodb+srv://root:1234@cluster0.um5wee2.mongodb.net/?retryWrites=true&w=majority')
+from pymongo import MongoClient
+import certifi
+ca = certifi.where()
+client = MongoClient('54.180.148.42', 27017, username="test", password="test")
 db = client.zipsarang
 
 @app.route('/')
@@ -219,3 +221,9 @@ def get_posts():
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
+
+    import sys
+
+    print("Hello World")
+    sys.exit(0)
+    print("Hello World 2.0")
