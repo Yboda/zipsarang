@@ -1,5 +1,6 @@
 # flask, pymongo, dnspython, PyJWT 설치
 from flask import Flask, render_template, jsonify, request, redirect, url_for
+
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 
@@ -17,6 +18,7 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config['UPLOAD_FOLDER'] = "./static/default_img"
 
 SECRET_KEY = 'zipsarang'
+
 
 # local
 # client = MongoClient('mongodb+srv://test:test@cluster0.um5wee2.mongodb.net/?retryWrites=true&w=majority')
@@ -254,3 +256,9 @@ def get_posts():
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
+
+    import sys
+
+    print("Hello World")
+    sys.exit(0)
+    print("Hello World 2.0")

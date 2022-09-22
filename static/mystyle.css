@@ -1,24 +1,27 @@
 body {
-    background-color: RGBA(232, 52, 78, 0.2);
+    background-color: #FFDEB4;
     min-height: 100vh;
-		padding-top: 3.25rem;
+    padding-top: 3.25rem;
 }
 
 .section {
+    background-color: #FFDEB4;
     padding: 1rem 1.5rem;
     max-width: 750px;
     margin: auto;
 }
+
 /*img {
     object-fit:cover;
     width:100%;
     height:100%;
 }*/
 .modal-img {
-    object-fit:cover;
-    width:100%;
-    height:100%;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
 }
+
 .nickname {
     margin: 2px 0;
     width: 80%;
@@ -26,28 +29,39 @@ body {
     font-size: 12px;
     font-weight: 900;
 }
+
 .text {
     font-size: 14px;
     margin-bottom: 3px;
 }
+
 .savedComment {
     font-size: 14px;
     margin-top: 3px;
 }
+
 .is-sparta {
-    color: #e8344e !important;
+    font-family: 'Jua', sans-serif;
+}
+
+.medium {
+    font-size: 20px;
+}
+
+.large {
+    font-size: 40px;
 }
 
 .button.is-sparta {
-    background-color: #e8344e;
+    background-color: #B2A4FF;
     border-color: transparent;
     color: #fff !important;
 }
 
 .button.is-sparta.is-outlined {
     background-color: transparent;
-    border-color: #e8344e;
-    color: #e8344e !important;
+    border-color: #B2A4FF;
+    color: #B2A4FF !important;
 }
 
 .modal-content {
@@ -61,13 +75,13 @@ input::-webkit-calendar-picker-indicator {
 
 #post-box {
     background-color: #fff;
-    width:200px;
+    width: 200px;
     height: 300px;
 }
 
 .comments-box {
-    border-top: 1px solid rgba(219,219,219,.5);
-    border-bottom: 1px solid rgba(219,219,219,.5);
+    border-top: 1px solid rgba(219, 219, 219, .5);
+    border-bottom: 1px solid rgba(219, 219, 219, .5);
     background-color: #fff;
     width: 100%;
     height: 100%;
@@ -76,6 +90,26 @@ input::-webkit-calendar-picker-indicator {
     -ms-overflow-style: none;
     padding-bottom: 10px;
 }
-.comments-box::-webkit-scrollbar{
-  display:none;
+
+.comments-box::-webkit-scrollbar {
+    display: none;
 }
+
+input::placeholder {
+    font-family: 'Black Han Sans', sans-serif;
+}
+
+.help {
+    font-family: 'Jua', sans-serif;
+}
+
+.title-img {
+    width: 80px;
+    height: 80px;
+}
+
+.reverse-pink:hover {
+    color: #B2A4FF;
+    background-color: #FFB4B4;
+}
+
