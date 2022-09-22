@@ -10,6 +10,7 @@ from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 import jwt
 
+
 # 회원가입 시, 비밀번호 암호화
 import hashlib
 
@@ -257,8 +258,3 @@ def get_posts():
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
 
-    import sys
-
-    print("Hello World")
-    sys.exit(0)
-    print("Hello World 2.0")

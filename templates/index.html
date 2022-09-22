@@ -30,6 +30,11 @@
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js" integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.1/gsap.min.js" integrity="sha512-Mf/xUqfWvDIr+1B6zfnIDIiG7XHzyP/guXUWgV6PgaQoIFeXkJQR5XWh9fqAiCiRCpemabt3naV4jhDWVnuYDQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.1/ScrollToPlugin.min.js" integrity="sha512-lFUdnIP0VHYatqtK0Mni2SDBS62JtUUPq9F26a/SDPZMHoGp3E1WO9gHXu1DddaN1ig1fn4mvHAqJ4x0kauKQw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js" integrity="sha512-8E3KZoPoZCD+1dgfqhPbejQBnQfBXe8FuwL4z/c8sTrgeDMFEnoyTlH3obB4/fV+6Sg0a0XF+L/6xS4Xx1fUEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 
     <script src="{{ url_for('static', filename='common.js') }}"></script>
     <script defer src="../static/main.js"></script>
@@ -54,7 +59,9 @@
         .level-item .pink:hover {
             color: #FFB4B4;
             border-color: #FFB4B4;
+            transition: color 0.4s;
         }
+
     </style>
 
     <script>
@@ -92,19 +99,19 @@
     {% if status %}
         <div class="navbar-brand">
             <a class="navbar-item large" href="/login">
-                <strong class="medium">로그인</strong>
+                <strong class="medium expand">로그인</strong>
             </a>
             <a class="navbar-item large" href="/sign_up">
-                <strong class="medium">회원가입</strong>
+                <strong class="medium expand">회원가입</strong>
             </a>
         </div>
     {% else %}
         <div class="navbar-brand">
             <a href="#" class="navbar-item" onclick="sign_out();">
-                <strong class="is-sparta" style="font-size: larger;">로그아웃</strong>
+                <strong class="is-sparta expand" style="font-size: larger;">로그아웃</strong>
             </a>
             <a class="navbar-item" href="/mypage">
-                <strong class="is-sparta" style="font-size: larger;">마이페이지</strong>
+                <strong class="is-sparta expand" style="font-size: larger;">마이페이지</strong>
             </a>
         </div>
     {% endif %}
@@ -213,7 +220,7 @@
                                         </div>
                                         <div class="level-right">
                                             <div class="level-item">
-                                                <a class="button is-sparta is-outlined"
+                                                <a class="button is-sparta is-outlined pink"
                                                    onclick='$("#modal-post").removeClass("is-active")'>닫기</a>
                                             </div>
                                         </div>
@@ -229,10 +236,10 @@
                                         </div>
                                         <div class="level-right">
                                             <div class="level-item">
-                                                <button class="button comment_btn" onclick="new_comment('{{ user_info.nickname }}')">댓글 남기기</button>
+                                                <button class="button comment_btn is-sparta reverse-pink" onclick="new_comment('{{ user_info.nickname }}')">댓글 남기기</button>
                                             </div>
                                             <div class="level-item">
-                                                <a class="button is-sparta is-outlined"
+                                                <a class="button is-sparta is-outlined pink"
                                                    onclick='$("#modal-post").removeClass("is-active")'>닫기</a>
                                             </div>
                                         </div>
@@ -247,7 +254,7 @@
         </article>
     </section>
 <section class="section">
-    <div class="container">
+    <div class="container posting-list">
         {% for posting in postinglist %}
             <div class="box">
             <article class="media">
@@ -282,5 +289,8 @@
 
     </div>
 </section>
+    <div id="to-top">
+      <div class="material-icons">arrow_upward</div>
+    </div>
 </body>
 </htm

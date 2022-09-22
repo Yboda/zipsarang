@@ -17,3 +17,25 @@ thisIsButton.addEventListener('click', function () {
     var input_clear = document.getElementById('clear');
     input_clear.value = null;
 });*/
+
+const toTopEl = document.querySelector('#to-top');
+toTopEl.addEventListener('click', function () {
+ gsap.to(window, .7, {
+  scrollTo: 0
+ })
+});
+
+window.addEventListener('scroll', _.throttle(function () {
+  console.log(window.scrollY);
+  if (window.scrollY > 50) {
+    // 맨위로 올라가기 버튼보이기!
+    gsap.to(toTopEl, .2, {
+      x: 0
+    });
+  } else {
+    // 맨위로 올라가기 버튼 숨기기!
+    gsap.to(toTopEl, .2, {
+      x: 100
+    });
+  }
+}, 300));
