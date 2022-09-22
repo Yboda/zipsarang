@@ -1,6 +1,8 @@
 # flask, pymongo, dnspython, PyJWT 설치
 from flask import Flask, render_template, jsonify, request, redirect, url_for
+
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 
 import os
 
@@ -17,18 +19,28 @@ app.config['UPLOAD_FOLDER'] = "./static/default_img"
 
 SECRET_KEY = 'zipsarang'
 
-client = MongoClient('mongodb+srv://root:1234@cluster0.um5wee2.mongodb.net/?retryWrites=true&w=majority')
+
+# local
+# client = MongoClient('mongodb+srv://test:test@cluster0.um5wee2.mongodb.net/?retryWrites=true&w=majority')
+# aws
+client = MongoClient('54.180.148.42', 27017, username="test", password="test")
 db = client.zipsarang
 
 @app.route('/')
 def home():
+
+    postinglist = list(db.posting.find({}))
+
+    for posting in postinglist:
+        posting['_id'] = str(posting['_id'])
+
     user_token = request.cookies.get('user_token')
     try:
         payload = jwt.decode(user_token, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"user_id": payload["id"]})
-        return render_template('index.html', user_info=user_info, status=False)
+        return render_template('index.html', postinglist=postinglist, user_info=user_info, status=False)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return render_template('index.html', status=True)
+        return render_template('index.html', postinglist=postinglist, status=True)
 
 
 @app.route('/sign_up', methods=['GET'])
@@ -158,10 +170,84 @@ def update_user():
 
     return jsonify({'result': 'success'})
 
-@app.route('/comment', methods=['POST'])
+@app.route('/default_password', methods=['POST'])
+def default_password():
+
+    user_id = request.form.get('user_id')
+    cat_name = request.form.get('cat_name')
+
+    find_user = db.users.find_one({"user_id": user_id, "cat_name" : cat_name})
+    if find_user is None:
+        return jsonify({'msg' : "입력하신 내용과 일치하는 정보가 없습니다."})
+    # 비밀번호 mycat123 초기화
+    db.users.update_one({'user_id': user_id}, {'$set': {'password': '0e024e5ab7654161d9ee542721aa626a25cbfdb1380e25006afce1e57633ded7'}})
+
+    return jsonify({'msg' : user_id + "의 비밀번호가 'mycat123'으로 변경되었습니다."})
+
+@app.route('/new_posting', methods=['POST'])
+def new_posting():
+
+    file = request.files["file"]
+
+    extension = file.filename.split('.')[-1]
+
+    today = datetime.now()
+    mytime = today.strftime('%Y%m%d%H%M%S')
+
+    filename = f'file--{mytime}'
+
+    dir = os.path.dirname(os.path.realpath(__file__)).replace('\\', '/') + '/'
+
+    save_to = f'{dir}static/{filename}.{extension}'
+    file.save(save_to)
+
+    user_id = request.form['user_id']
+    desc = request.form['desc']
+    nickname = request.form['nickname']
+    cat_name = request.form.get('cat_name')
+
+    doc = {
+        "cat_img": f'{filename}.{extension}',    # 고양이 사진
+        "desc": desc,           # 자랑글
+        "user_id": user_id,    # 작성자
+        "nickname": nickname,   # 닉네임
+        "cat_name": cat_name   # 고양이 이름
+    }
+    db.posting.insert_one(doc)
+    return jsonify({'result': 'success'})
+
+@app.route('/posting_info', methods=['POST'])
+def posting_info():
+    #포스팅 조회
+    _id = request.form['_id']
+    posting = db.posting.find_one({'_id' : ObjectId(_id)},{'_id':False})
+
+    comments = list(db.comment.find({'posting_id' : _id}))
+
+    for comment in comments:
+        comment['_id'] = str(comment['_id'])
+
+    return jsonify({"posting_info": posting, "comments" : comments})
+
+@app.route('/new_comment', methods=['POST'])
 def comment():
+
+    user_id = request.form['user_id']
+    posting_id = request.form['posting_id']
+    comment = request.form['comment']
+    nickname = request.form['nickname']
+
+    doc = {
+        "comment" : comment,
+        "nickname" : nickname,
+        "user_id" : user_id,
+        "posting_id" : posting_id
+    }
+
+    db.comment.insert_one(doc)
+
     # 댓글 저장
-    return jsonify({"result": "success", 'msg': '저장성공'})
+    return jsonify({"result": "success"})
 
 @app.route("/get_commnet", methods=['GET'])
 def get_posts():
@@ -170,3 +256,9 @@ def get_posts():
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
+
+    import sys
+
+    print("Hello World")
+    sys.exit(0)
+    print("Hello World 2.0")
