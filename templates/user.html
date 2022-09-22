@@ -185,17 +185,13 @@
                                             <span class="file-icon"><i class="fa fa-upload"></i></span>
                                             <span class="file-label">파일 선택</span>
                                         </span>
-                                <span id="span-file" class="file-name"
-                                      style="width:100%;max-width:100%">{% if status is sameas false %}
-                                    {{ user_info.cat_img }} {% endif %}</span>
-                                <input type="hidden" id="fileName" {% if status is sameas false %}
-                                       value="{{ user_info.cat_img }}" {% endif %}>
-                            </label>
-                        </div>
-                        <!--<div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="file"
-                                {% if status is sameas flase %} value="{{ user_info.cat_img }}" {% endif %}>
-                                    <label class="custom-file-label" for="file">고양님 사진</label>
+                                        <span id="span-file" class="file-name" style="width:100%;max-width:100%">{% if status is sameas false %} {{ user_info.cat_img }} {% endif %}</span>
+                                        <input type="hidden" id="fileName" {% if status is sameas false %} value="{{ user_info.cat_img }}" {% endif %}>
+                                    </label>
+                                </div>
+                                <!--<div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="file" {% if status is sameas flase %} value="{{ user_info.cat_img }}" {% endif %}>
+                                    <label class="custom-file-label" for="file">고양이 사진</label>
                                 </div>-->
                     </div>
                     <nav class="level is-mobile">
